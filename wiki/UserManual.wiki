@@ -29,5 +29,47 @@ To install PrintRuler on other distributions, you need to compile youself the so
 	or
 	_qmake_
 then
-	make install
+	_make release_
+and to finish 
+        _make install_
 The installation is finished.
+
+= Interface =
+
+The interface is developed in C++ with the QT toolkit, if you change the default theme of your desktop, the change will be reported to PrintRuler.
+
+== Menu and MenuBar ==
+The Menu has following tools :
+|| *Layout* || this tool allows to change the disposition of pages in the document. You can choose to put 1, 2, 4 or 8 pages on a single sheet of paper. You can make a booklet (if you choose this option, you can put maximum 4 pages on a sheet). The fact that booklet is selected, does not change the Preview. || IMG ||
+|| *Margin and Border* || you can add a margin of 2 sizes and a border of 2 sizes || IMG ||
+|| *List of jobs* || this is the list of documents you want to print. You can change the order or delete jobs you want not to print. To change the order, select a job and use the green arrows below the list to move the document up or down. To delete a document, select it and press the red cross below the list. || IMG ||
+|| *Separate Jobs* || Separate Jobs indicates to not merge the documents together. e.g. it will let a blank page between 2 documents if the first has even pages and you print it in duplex. || IMG ||
+|| *Show deleted pages* || shows the pages deleted before, with a red overlay layer. With this option, you can take back pages. More information in the chapter 3.2 Preview Panel. || IMG ||
+
+The menubar has some other tools :
+|| *Print Button* || it opens the PrintDialog window. More information in the chapter _PrintDialog and DuplexDialog_ || IMG ||
+|| *Add Button* || allows to add new documents to the jobs list. It opens a browser to search documents in your file system. || IMG ||
+|| *Zoom* || These tools zoom in or out your document to show you more distant or closer as the regular view. e.g. if you want to print 8pages on a sheet, it is very difficult to read some pages of the new document. || IMG ||
+
+Menu
+|| SubMenu || File || *Add* : q.v. Add Button ||
+|| || || *Print* : q.v. Print Button || 
+|| || || *Export as PDF* : allows to export the modified document as a PDF file ||
+|| || || *Export as PS* : allows to export the modified document as a Postscript file. ||
+|| || || *Close* : to shutdown the application.||
+|| || Settings || *Configure* : allows to define which repository you want by default. This setting is discribe more in  chapter “How it work ?” ||
+|| || About || *PrintRuler* : to know more about the project. ||
+
+== Preview Panel and Indication ==
+The *Preview Panel* is the most important object in PrintRuler, it allows you to see change,s which affect your documents before they are printed. 
+This panel allows you 3 direct modfications to your page : 
+ * Delete : it allow you to delete the current page. e.g. you can use it to remove advertising or useless blank pages at the end of documents to preserve quality and quantity. To undelete a page, check the option “Show deleted pages” to see the deleted pages.
+ * Add blank page before/after : you can add a blank page before or after the current page. e.g. you can separate document or add blank page to start a new chapter on a new sheet of paper if you print 2 pages on one.
+
+To make these actions, *make a right-click on the page*. A menu will appear with these 3 tools.
+
+The *indication* shows how many pages will be print. 
+
+
+
+
