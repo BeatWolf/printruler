@@ -63,13 +63,72 @@ Menu
 == Preview Panel and Indication ==
 The *Preview Panel* is the most important object in PrintRuler, it allows you to see change,s which affect your documents before they are printed. 
 This panel allows you 3 direct modfications to your page : 
- * Delete : it allow you to delete the current page. e.g. you can use it to remove advertising or useless blank pages at the end of documents to preserve quality and quantity. To undelete a page, check the option “Show deleted pages” to see the deleted pages.
- * Add blank page before/after : you can add a blank page before or after the current page. e.g. you can separate document or add blank page to start a new chapter on a new sheet of paper if you print 2 pages on one.
+ * *Delete* : it allow you to delete the current page. e.g. you can use it to remove advertising or useless blank pages at the end of documents to preserve quality and quantity. To undelete a page, check the option “Show deleted pages” to see the deleted pages.
+ * *Add blank page before/after* : you can add a blank page before or after the current page. e.g. you can separate document or add blank page to start a new chapter on a new sheet of paper if you print 2 pages on one.
 
 To make these actions, *make a right-click on the page*. A menu will appear with these 3 tools.
 
 The *indication* shows how many pages will be print. 
 
+== PrintDialog == 
+The PrintDialog is a pop-up window which appear after clicking to start printing.It offers some tools describ in the next table.
+|| *PrinterConfig* || After choose the printer you want use to print your document, you can modify properties. q.v. Illustration below. ||
+|| *Tools* || You have 3 tools to change some some specifications. ||
+|| ||  *Manual Duplex printing* : if your printer does not support the duplex printing, you must check this box. The printer will start to print the odd pages, a pop-up will appear to print the next even pages. ||
+|| ||  *Rotate even pages (for booklet)* : to print a booklet, you must check this box if you print in duplex, the even pages will be reversed to fit to the booklet format. ||
+|| ||  *Delete jobs afterwards* : check this box to delete the documents after print. ||
+|| *Copies* || To select how many copies you want to print. ||
+|| *Buttons* || You can choose to continu or to cancel the process. ||
+
+= Demonstration =
+In this demo, we will print this document with the document of the PrintRuler project. This part of this manual will be a step-by-step process to describe every step to print a single beautiful document.
+First step, start the application :
+	Start a terminal and write : 
+		|| _printruler_ ||
+	or
+	Click the new icon you added to your desktop.
+PrintRuler starts, a new window is open.
+
+== Add new Job ==
+ # Click [img_add] in the menu bar, a browser is open
+ # Search document named “userManual.pdf”
+ # Click [OK] to add this document to PrintRuler
+ # Click [img_add] to add the second document named “PrintRulerDocumentation”.
+Now, you have two jobs in the listjobs.
+== Remove some pages ==
+The documents contain pages with the Table of Contents, we are going to remove it.
+ 1. Use the scroll bar on the right side of the PreviewPanel to go down to the second page of the first job. It is the Table of Contents.
+ # To remove it, make a right-click on the page
+ # Select “Delete” in the new menu. The current is deleted. Good job.
+   If you remove the wrong page, you can undelete it:
+ # Just check the box “Show deleted pages” in the menu. The deleted pages appear in red.
+ # Right-click the wrong deleted page.
+ # Select “Undelete” in the new menu.
+   Now you have deleted the Table of Contents of the first document.
+   To remove the Table of Contents of the second document :
+ # Zoom out  to have a distant view of documents
+ # Use the scroll bar in the right of the PreviewPanel to go down and search the Table of Contents of the next document.
+ # Make the step 2 and 3 to remove this pages.
+   Now your document has no more pages with Table of Contents.
+== change number of pages per sheet ==
+To economize paper, we are going to set number of pages per sheet of paper.
+ # Set the layout with the number “2” to configure 2 pages per sheet of paper.
+== add big margin and small border ==
+We are going to make a separation between pages on a single sheet of paper.
+ # Set the margin to Big
+ # Set the border to Small
+Now your jobs are ready to be printed.
+== Print in Grayscale on a A4 format paper on two sides ==
+We are going to print. 
+Press [img_print] to start the PrintDialog.
+In the list of printer
+ # Select your default printer
+ # Click on Properties
+  # Set the color to Grayscale
+  # Set the duplex to “ON”
+  # Set the format paper to A4.
+   It is ok. You are ready to print. 
+ # To finish, click on “Print” and enjoy the result to your printer.
 
 
 
