@@ -1,13 +1,33 @@
 #summary The user manual
 
 = Introduction =
+This manual will present you PrintRuler. PrintRuler is an application which will help you in your printing work. This application allows you to modify your document before you start the print job.
+This document will describe the interface and all possibilities offers by PrintRuler.
 
-User Manual
+= Installation =
+To use PrintRuler, cups-pdf must be install on your system. The default parameters are right, no need to change.
 
+=== Debian Distribution ===
 
-= Details =
+To install the PrintRuler application on a Debian Distribution, you must download the Debian Package printruler.deb to this address : 
+		_http://printruler.googlecode.com/files/printruler_20080618-1_i386.deb_
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Next, you double-click on the downloaded file to open the PackageManager
+
+This window allows to read the description and to check details and included files.
+To finish the installation, press the button “Install Package”.
+
+The install will process and a message will appear to indicate end of the install process.
+
+The installation is finished.
+
+If you want to add an icon to your desktop, linked to this application. Add a new launcher on your desktop and set Command as “printruler” and set Name as “PrintRuler”.
+
+=== Others Linux Distribution and Mac OS ===
+To install PrintRuler on other distributions, you need to compile youself the source-code. To do, start your terminal and type : 
+	_qmake-qt4_
+	or
+	_qmake_
+then
+	make install
+The installation is finished.
