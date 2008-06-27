@@ -1,5 +1,5 @@
 #summary The user manual
-
+Download the complete user manual from: http://printruler.googlecode.com/files/userManual.pdf
 = Introduction =
 This manual will present you PrintRuler. PrintRuler is an application which will help you in your printing work. This application allows you to modify your document before you start the print job.
 This document will describe the interface and all possibilities offers by PrintRuler.
@@ -129,6 +129,4 @@ In the list of printer
   # Set the format paper to A4.
    It is ok. You are ready to print. 
  # To finish, click on “Print” and enjoy the result to your printer.
-
-
 
