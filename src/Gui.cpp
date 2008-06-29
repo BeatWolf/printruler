@@ -70,6 +70,7 @@ void Gui::initGui(){
 	trayIcon->setIcon(QIcon(iconPath+"document-print.png"));
 	trayIcon->show();
 	QMenu *trayMenu = new QMenu("TrayMenu");
+	trayMenu->addAction(printDocument);
 	trayMenu->addAction(exitAction);
 	trayIcon->setContextMenu(trayMenu);
 	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
