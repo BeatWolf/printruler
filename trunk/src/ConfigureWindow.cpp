@@ -16,12 +16,19 @@ ConfigureWindow::ConfigureWindow()
 	layout->addWidget(checkFolder,0,1);
 	layout->addWidget(selectFolder,0,2);
 	
+	QLabel *labelShow = new QLabel("Start in systray only");
+	showOnOpen = new QCheckBox();
+	showOnOpen->setChecked(!conf->getShowOnOpen());
+
+	layout->addWidget(showOnOpen,1,1);
+	layout->addWidget(labelShow,1,0);
+	
 	QPushButton *save = new QPushButton("Save");
 	connect(save, SIGNAL(clicked()), this, SLOT(save()));
 	QPushButton *cancel = new QPushButton("Cancel");
 	connect(cancel, SIGNAL(clicked()), this, SLOT(cancel()));
-	layout->addWidget(save,1,1);
-	layout->addWidget(cancel,1,2);	
+	layout->addWidget(save,2,1);
+	layout->addWidget(cancel,2,2);	
 		
 	setLayout(layout);
 	resize(400,100);	
@@ -39,6 +46,9 @@ void ConfigureWindow::save(){
 		QString temp = checkFolder->text();
 		conf->setWatchFolder(temp);
 	}
+	
+	conf->setShowOnOpen(!showOnOpen->isChecked());
+	conf->saveConfigFile();
 	accept();
 }
 
