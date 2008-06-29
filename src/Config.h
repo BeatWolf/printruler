@@ -11,6 +11,7 @@
 #define DEFAULT_DELETE false
 #define DEFAULT_ROTATE false
 #define DEFAULT_SIDES 0
+#define DEFAULT_SHOW_ON_OPEN true
 
 
 /**
@@ -92,6 +93,9 @@ public:
 	 */
 	int getSides();
 	
+	bool getShowOnOpen();
+	void setShowOnOpen(bool show);
+	
 	void setSides(int s);
 	
 	void saveConfigFile();
@@ -110,6 +114,7 @@ private:
 	
 	bool deleteJobsAfterPrinting;
 	bool rotateEven;
+	bool showOnOpen;
 	
 	int sides;
 	

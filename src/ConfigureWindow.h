@@ -19,6 +19,7 @@ private:
 	QGridLayout *layout;
 	Config *conf;
 	QLineEdit *checkFolder;
+	QCheckBox *showOnOpen;
 };
 
 #endif /*CONFIGUREWINDOW_H_*/

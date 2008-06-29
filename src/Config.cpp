@@ -68,6 +68,14 @@ void Config::setDefaultDeleting(bool deleting){
 bool Config::isRotateEven(){
 	return rotateEven;
 }
+
+bool Config::getShowOnOpen(){
+	return showOnOpen;
+}
+
+void Config::setShowOnOpen(bool show){
+	showOnOpen = show;
+}
 	
 void Config::setRotateEven(bool rotate){
 	rotateEven = rotate;
@@ -170,6 +178,14 @@ void Config::loadConfigFile(){
 		sides = DEFAULT_SIDES;
 	}
 	
+	n = docElem.firstChildElement("showonopen");
+						
+	if(!n.isNull()){
+		QDomElement e = n.toElement();
+		showOnOpen =e.text().compare("true") == 0;
+	}else{
+		showOnOpen = DEFAULT_SHOW_ON_OPEN;
+	}
 	
 	file.close();
 }
@@ -182,6 +198,7 @@ void Config::loadDefault(){
 	defaultPrinter = new QString(DEFAULT_PRINTER);
 	deleteJobsAfterPrinting = DEFAULT_DELETE;
 	rotateEven = DEFAULT_ROTATE;
+	showOnOpen = DEFAULT_SHOW_ON_OPEN;
 	saveConfigFile();
 }
 
@@ -232,6 +249,18 @@ void Config::saveConfigFile(){
  	 
  	 QDomText rotateValue = doc.createTextNode(tempRotate);
  	 defrotate.appendChild(rotateValue);
+ 	 
+ 	 //show on load
+ 	 QDomElement defshow = doc.createElement("showonopen");
+ 	 root.appendChild(defshow);
+ 	 QString tempShow("true");
+ 	 if(!showOnOpen){
+ 		tempShow = "false";
+ 	 }
+ 	 
+ 	 QDomText showValue = doc.createTextNode(tempShow);
+     defshow.appendChild(showValue);
+ 	 
  	 //deletedprinted end
  	 
  	 QDomElement defsides = doc.createElement("twosidedprinting");

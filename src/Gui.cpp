@@ -230,7 +230,9 @@ void Gui::initGui(){
 	vboxDock->addStretch(1);
 	addDockWidget(Qt::LeftDockWidgetArea,dock);	
 	resize(DEFAULT_SIZE_X, DEFAULT_SIZE_Y);
-	show();
+	if(conf->getShowOnOpen()){
+		show();
+	}
 	
 	testDependencies();
 	
@@ -457,7 +459,7 @@ void Gui::configure(){
 }
 
 void Gui::iconActivated(QSystemTrayIcon::ActivationReason reason){
-	if(reason == QSystemTrayIcon::DoubleClick){
+	if(reason == QSystemTrayIcon::Trigger){
 		if(!isVisible()){
 			show();
 		}else{
