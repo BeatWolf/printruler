@@ -288,6 +288,11 @@ void Gui::addDocument(QString *file, bool wait = true){
 	progress->show();
 	progress->setMinimum(0);
 	progress->setMaximum(0);
+	if(wait){
+		QFileInfo infoFile(*file);
+	    trayIcon->showMessage("Loading new printjob", infoFile.fileName(), QSystemTrayIcon::Information,
+	                           4000);
+	}
 	documentLoads();
 	renderer = new DocumentRenderer(*file, wait);
 	connect(renderer, SIGNAL(finished(Document *)),
