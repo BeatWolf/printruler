@@ -10,18 +10,18 @@
 Gui::Gui()
 {
 	defaultOpenPath = QDir::homePath();
-	
+
 	doc = new VirtualDocument();
 	conf = Config::instance();
 	mutex = new QMutex();
-	
+
 	watch = new WatchDog(conf);
 	connect(watch, SIGNAL(fileFound(QString*, bool)), this, SLOT(addDocument(QString*, bool)));
 	connect(conf, SIGNAL(watchFolderChanged(QString)), watch, SLOT(folderChanged(QString)));
 
 	zoomlevel = 0;
 	documentsLoading = 0;
-	
+
 	iconPath = conf->getIconFolder();
 }
 
@@ -43,27 +43,27 @@ void Gui::initGui(){
 	//Actions
 	addDocumentAction = new QAction(QIcon(iconPath+"list-add.png"),QString("add"),this);
 	connect(addDocumentAction, SIGNAL(triggered()), this, SLOT(add()));
-	printDocument = new QAction(QIcon(iconPath+"document-print.png"),QString("Print"),this);	
+	printDocument = new QAction(QIcon(iconPath+"document-print.png"),QString("Print"),this);
 	connect(printDocument, SIGNAL(triggered()), this, SLOT(print()));
 	QAction *exitAction = new QAction("Close",this);
 	connect(exitAction, SIGNAL(triggered()), this, SLOT(end()));
 	QAction *configureAction = new QAction("Configure",this);
 	connect(configureAction, SIGNAL(triggered()), this, SLOT(configure()));
-	
+
 	exportPDFAction = new QAction("Export as PDF",this);
 	connect(exportPDFAction, SIGNAL(triggered()), this, SLOT(exportPDF()));
 	exportPSAction = new QAction("Export as PS",this);
 	connect(exportPSAction, SIGNAL(triggered()), this, SLOT(exportPS()));
-	
+
 	zoomInAction = new QAction(QIcon(iconPath+"zoom-in.png"),"Zoom in",this);
 	connect(zoomInAction, SIGNAL(triggered()), this, SLOT(zoomIn()));
-	
+
 	zoomOutAction = new QAction(QIcon(iconPath+"zoom-out.png"),"Zoom out",this);
 	connect(zoomOutAction, SIGNAL(triggered()), this, SLOT(zoomOut()));
-	
+
 	aboutAction = new QAction("Printruler",this);
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutDialog()));
-	
+
 	setActionEnabled(false);
 	//System tray
 	trayIcon = new QSystemTrayIcon(this);
@@ -75,49 +75,49 @@ void Gui::initGui(){
 	trayIcon->setContextMenu(trayMenu);
 	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 	             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-	
-	
+
+
 	//Menu
 	QMenuBar *menubar = new QMenuBar();
-	
+
 	QMenu *fileMenu = new QMenu("File");
-	
+
 	fileMenu->addAction(addDocumentAction);
 	fileMenu->addAction(printDocument);
 	fileMenu->addAction(exportPDFAction);
 	fileMenu->addAction(exportPSAction);
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
-	
+
 	menubar->addMenu(fileMenu);
-	
+
 	QMenu *settingsMenu = new QMenu("Settings");
 	settingsMenu->addAction(configureAction);
 	menubar->addMenu(settingsMenu);
-	
+
 	QMenu *aboutMenu = new QMenu("About");
 	aboutMenu->addAction(aboutAction);
 	menubar->addMenu(aboutMenu);
-	
+
 	setMenuBar(menubar);
-	
+
 	//preview
 	preview = new PreviewPanel(this);
 	preview->setDocument(doc);
 	connect(preview, SIGNAL(documentRendered()), this, SLOT(documentUpdated()));
 	setCentralWidget(preview);
-	
+
 	//Statusbar
 	statusBar = new QStatusBar(this);
 	setStatusBar(statusBar);
 	progress = new QProgressBar();
 	pageNumber = new QLabel("Pages: "+QString::number(0));
-	
+
 	statusBar->addWidget(progress,0);
 	statusBar->addPermanentWidget(pageNumber,0);
-	
+
 	progress->hide();
-	
+
 	//Toolbar
 	QToolBar *toolbar = new QToolBar();
 	toolbar->setMovable(false);
@@ -127,39 +127,39 @@ void Gui::initGui(){
 	toolbar->addAction(zoomInAction);
 	toolbar->addAction(zoomOutAction);
 	addToolBar(toolbar);
-	
+
 	//left dockwidget
 	dock = new QDockWidget();
 	dock->setEnabled(false);
 	dock->setFeatures(QDockWidget::DockWidgetMovable );
-	
+
 	//Page layout
 	QWidget *dockWidget = new QWidget;
 	QVBoxLayout *vboxDock = new QVBoxLayout;
 	dockWidget->setLayout(vboxDock);
-	
+
 	QGroupBox *groupBox = new QGroupBox("Layout");
 	QGridLayout *vbox = new QGridLayout;
 	vbox->setColumnMinimumWidth(1,2);
-	
+
 	group = new QButtonGroup();
 
 	QRadioButton *n1up = new QRadioButton("1", dock);
 	n1up->setChecked(true);
 	QRadioButton *n2up = new QRadioButton("2", dock);
 	n4up = new QRadioButton("4", dock);
-	n8up = new QRadioButton("8", dock);	
+	n8up = new QRadioButton("8", dock);
 	QCheckBox *booklet = new QCheckBox("Booklet");
 	connect(booklet, SIGNAL( stateChanged (int)),
 				this, SLOT(bookletChanged ( int )));
-	
+
 	group->addButton(n1up,1);
 	group->addButton(n2up,2);
 	group->addButton(n4up,4);
 	group->addButton(n8up,8);
-	
+
 	connect(group, SIGNAL(buttonClicked(int)), this, SLOT(layoutChanged(int)));
-	
+
 	vbox->addWidget(n1up,0,0);
 	vbox->addWidget(n2up,1,0);
 	vbox->addWidget(n4up,0,1);
@@ -169,7 +169,7 @@ void Gui::initGui(){
 	groupBox->setLayout(vbox);
 	vboxDock->addWidget(groupBox);
 
-	
+
 	//Options Margin
 	QComboBox *margin = new  QComboBox();
 	margin->setEditable(false);
@@ -178,10 +178,10 @@ void Gui::initGui(){
 	margin->addItem("big");
 	connect(margin, SIGNAL(currentIndexChanged(int)), this, SLOT(marginChanged(int)));
 	QLabel *marginLabel = new QLabel("Margins");
-	
+
 	vboxDock->addWidget(marginLabel);
 	vboxDock->addWidget(margin);
-	
+
 	//Options border
 	QComboBox *border = new  QComboBox();
 	border->setEditable(false);
@@ -189,19 +189,18 @@ void Gui::initGui(){
 	border->addItem("small");
 	border->addItem("big");
 	connect(border, SIGNAL(currentIndexChanged(int)), this, SLOT(borderChanged(int)));
-	
+
 	QLabel *borderLabel = new QLabel("Borders");
-	
+
 	vboxDock->addWidget(borderLabel);
 	vboxDock->addWidget(border);
-	
+
 	//Document list
 	listWidget = new QListWidget(this);
 	vboxDock->addWidget(listWidget);
-	
-	dock->setMaximumWidth(50);
+
 	dock->setWidget(dockWidget);
-	
+
 
 	QToolBar *documentToolbar = new QToolBar();
 	QAction *deleteDocument = new QAction(QIcon(iconPath+"edit-delete.png"),QString("delete"),this);
@@ -210,32 +209,34 @@ void Gui::initGui(){
 	connect(deleteDocument, SIGNAL(triggered()), this, SLOT(deleteDocument()));
 	connect(moveUpDocument, SIGNAL(triggered()), this, SLOT(moveUpDocument()));
 	connect(moveDownDocument, SIGNAL(triggered()), this, SLOT(moveDownDocument()));
-	
+
 	documentToolbar->addAction(deleteDocument);
 	documentToolbar->addAction(moveUpDocument);
 	documentToolbar->addAction(moveDownDocument);
 	vboxDock->addWidget(documentToolbar);
-	
+
 	QCheckBox *seperate = new QCheckBox("Seperate jobs");
 	connect(seperate, SIGNAL( stateChanged (int)),
 			this, SLOT(seperateJobs ( int )));
-	
+
 	vboxDock->addWidget(seperate);
-	
+
 	QCheckBox *showDeleted = new QCheckBox("Show deleted pages");
 	connect(showDeleted, SIGNAL( stateChanged (int)),
 			this, SLOT(showDeletedPages ( int )));
 	vboxDock->addWidget(showDeleted);
 
 	vboxDock->addStretch(1);
-	addDockWidget(Qt::LeftDockWidgetArea,dock);	
+	addDockWidget(Qt::LeftDockWidgetArea,dock);
 	resize(DEFAULT_SIZE_X, DEFAULT_SIZE_Y);
 	if(conf->getShowOnOpen()){
 		show();
 	}
-	
+
 	testDependencies();
-	
+
+	dock->setMaximumWidth(200);
+
 	watch->run();
 }
 
@@ -274,15 +275,15 @@ int Gui::documentFinished(){
 void Gui::addDocument(Document *document){
 	doc->addDocument(document);
 	preview->renderDocument();
-	
+
 	listWidget->addItem(*document->getFileName());
 	dock->setEnabled(true);
 	setActionEnabled(true);
-	
+
 	if(documentFinished() == 0){
 		progress->hide();
 	}
-	
+
 	show();
 	//mutex->unlock();
 }
@@ -311,7 +312,7 @@ void Gui::deleteDocument(){
 		delete listWidget->takeItem(listWidget->row(items.at(0)));
 		preview->renderDocument();
 	}
-	
+
 	if(doc->realSize() == 0){
 		dock->setEnabled(false);
 		setActionEnabled(false);
@@ -324,7 +325,7 @@ void Gui::moveUpDocument(){
 		int index = listWidget->row(items.at(0));
 		if(index > 0){
 			doc->moveUp(index);
-			
+
 			QListWidgetItem *item = listWidget->takeItem(index);
 			listWidget->insertItem(index-1,item);
 			listWidget->setCurrentItem(item);
@@ -339,7 +340,7 @@ void Gui::moveDownDocument(){
 		int index = listWidget->row(items.at(0));
 		if(index < doc->documents()-1){
 			doc->moveDown(index);
-			
+
 			QListWidgetItem *item = listWidget->takeItem(index);
 			listWidget->insertItem(index+1,item);
 			listWidget->setCurrentItem(item);
@@ -360,7 +361,7 @@ void Gui::add(){
 	if (!fileName.isEmpty()){
 		QFileInfo info(fileName);
 		defaultOpenPath = info.path();
-				
+
 		QString * fileNameTmp = new QString(fileName);
 		addDocument(fileNameTmp, false);
 	}
@@ -368,9 +369,9 @@ void Gui::add(){
 
 void Gui::exportFinished(){
 	progressDialog->hide();
-		
+
 	delete progressDialog;
-	
+
 	//delete creator;
 }
 
@@ -390,7 +391,7 @@ void Gui::exportPDF(){
 		creator = new DocumentCreator(doc,fileName);
 		creator->setPDF(true);
 		connect(creator, SIGNAL(done()), this, SLOT(exportFinished()));
-		
+
 		progressDialog = new QProgressDialog("Export to PDF",0,0,0,this,Qt::Dialog);
 		progressDialog->show();
 		creator->start();
@@ -406,14 +407,14 @@ void Gui::exportPS(){
 								tr("PostScript Files (*.ps)"),
 	                            &selectedFilter,
 	                             options);
-	
+
 	if (!fileName.isEmpty()){
 		if(!fileName.endsWith(".ps")){
 			fileName+=".ps";
 		}
 		creator = new DocumentCreator(doc,fileName);
 		connect(creator, SIGNAL(done()), this, SLOT(exportFinished()));
-		
+
 		progressDialog = new QProgressDialog("Export to PostScript",0,0,0,this,Qt::Dialog);
 		progressDialog->show();
 		creator->start();
@@ -423,7 +424,7 @@ void Gui::exportPS(){
 void Gui::print(){
 	PrintDialog dialog(doc);
 	dialog.exec();
-	
+
 	Config *conf = Config::instance();
 	if(conf->getDefaultDeleting()){
 		listWidget->clear();
@@ -433,7 +434,7 @@ void Gui::print(){
 		dock->setEnabled(false);
 		setActionEnabled(false);
 	}
-	
+
 	preview->renderDocument();
 }
 
@@ -477,7 +478,7 @@ void Gui::seperateJobs(int state){
 
 void Gui::bookletChanged(int state){
 	doc->setBooklet(state == Qt::Checked);
-	
+
 	if(state == Qt::Checked){
 		n8up->setEnabled(false);
 		if(doc->getNup() > 4){
@@ -486,7 +487,7 @@ void Gui::bookletChanged(int state){
 		}
 	}else{
 		n8up->setEnabled(true);
-	}	
+	}
 }
 
 void Gui::showDeletedPages(int state){
@@ -511,7 +512,7 @@ void Gui::end(){
 
 void Gui::zoomIn(){
 	zoomOutAction->setEnabled(true);
-	
+
 	if(zoomlevel == 0){
 		zoomlevel--;
 		zoomInAction->setEnabled(false);
@@ -530,7 +531,7 @@ void Gui::zoomIn(){
 
 void Gui::zoomOut(){
 	zoomInAction->setEnabled(true);
-	
+
 	if(zoomlevel == -1){
 		zoomlevel++;
 		preview->setZoomLevel(zoomlevel);
@@ -556,5 +557,5 @@ void Gui::aboutDialog(){
 	QMessageBox::information(this, "Printruler",
 	                   "Printruler version \n $Header: /home/cvs/FPL/CVSROOT/src/src/Gui.cpp,v 1.36 2008/06/15 19:20:48 wolfb05 Exp $\nLicence: GPLv3",
 	                   QMessageBox::Ok,
-	                   QMessageBox::Ok); 
+	                   QMessageBox::Ok);
 }
