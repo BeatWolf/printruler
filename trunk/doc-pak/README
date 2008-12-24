@@ -1,0 +1,29 @@
+-------INSTALL-------
+
+To install printruler, do the following:
+
+qmake-qt4
+make
+make install
+
+qmake-qt4 will generate a makefile from the .pro file.
+make will compile the application, and make install will
+install it. For the command make install, root privileges
+may be needed. (sudo make install).
+
+-------DEPENDENCIES-------
+
+To compile printruler, you need at least Qt 4.3.
+You will also need the developement libraries of Qt 4.3
+
+Printruler need aditional applications to actualy run.
+These are:
+gs (ghostscript), ps2pdf, pdftops, psnup, psbook, psmerge and psselect, ps2ps
+
+Printruler compiles fine without this applications installed, but they
+are needed when running printruler.
+
+Another nice to have dependency is cups-pdf, which then can be used
+to directly print to printruler from any application.
+You have to change in the preferences of printruler, the folder that
+has to be watched for new files, to match the cups-pdf output folder.
